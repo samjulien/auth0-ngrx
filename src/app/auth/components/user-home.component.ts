@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
     <div>
       <h3>Welcome Home!</h3>
       <button mat-button raised color="accent" (click)="goToBooks()">See my book collection</button>
-      <button mat-button raised color="accent" (click)="logout()">Logout</button>
+      <button mat-button raised color="accent" (click)="logout()">Log Out</button>
     </div>
   `,
   styles: [

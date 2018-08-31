@@ -31,9 +31,7 @@ export class AuthEffects {
     .pipe(
       exhaustMap(() => {
         return this.authService.handleLoginCallback().pipe(
-          // take(1),
-          map((parseHashResult: ParseHashResult) => {
-            console.log('login complete');
+          map((parseHashResult) => {
             const { error, authResult } = parseHashResult;
             if (authResult && authResult.accessToken) {
               window.location.hash = '';

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as auth0 from 'auth0-js';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ParseHashResult } from '@app/auth/models/parse-hash-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +16,7 @@ export class AuthService {
     scope: environment.auth.scope
   });
   expiresAt: any;
+  token: any;
   authenticated: boolean;
 
   constructor() {}
@@ -25,19 +25,17 @@ export class AuthService {
     this.auth0.authorize();
   }
 
-  handleLoginCallback(): Observable<ParseHashResult> {
+  handleLoginCallback(): Observable<any> {
     return this.auth0.parseHash((error, authResult) =>
       of({ error, authResult })
     );
   }
 
   setSession(authResult) {
-    // Set the time that the Access Token will expire at
-    this.expiresAt = JSON.stringify(
-      authResult.expiresIn * 1000 + new Date().getTime()
-    );
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('expires_at', this.expiresAt);
+    // Set the time that the access token will expire at
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
+    this.token = authResult.accessToken;
+    this.authenticated = true;
   }
 
   logout() {
